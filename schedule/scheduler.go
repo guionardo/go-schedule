@@ -88,7 +88,7 @@ func (s *Scheduler) Run(ctx context.Context, callback ScheduleCallBack) {
 			next := s.GetNextSchedule()
 
 			if next != nil && next.NextRun().Before(time.Now()) {
-				next.Run(callback)
+				next.Run(callback, s.logger)
 			} else {
 				time.Sleep(s.runInterval)
 			}
