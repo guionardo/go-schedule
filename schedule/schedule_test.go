@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func TestNewSchedule_Empty_ShouldHaveNoNext(t *testing.T) {
+func TestNewScheduleEmptyShouldHaveNoNext(t *testing.T) {
 	t.Run("Default", func(t *testing.T) {
 		s := NewSchedule("test")
 		if s.NextRun().IsZero() == false {
