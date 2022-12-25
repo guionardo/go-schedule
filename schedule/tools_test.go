@@ -64,6 +64,26 @@ func TestParseDuration(t *testing.T) {
 			str:     "invalid",
 			wantErr: true,
 		},
+		{
+			name:    "Invalid hour",
+			str:     "x:00:00",
+			wantErr: true,
+		},
+		{
+			name:    "Invalid hour 2",
+			str:     "25:00:00",
+			wantErr: true,
+		},
+		{
+			name:    "Invalid minute",
+			str:     "00:x:00",
+			wantErr: true,
+		},
+		{
+			name:    "Invalid second",
+			str:     "00:00:61",
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
