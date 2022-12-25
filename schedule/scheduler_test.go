@@ -11,10 +11,10 @@ import (
 func TestNewScheduler(t *testing.T) {
 	t.Run("Default", func(t *testing.T) {
 		logger := log.New(os.Stdout, "", log.LstdFlags)
-		scheduler := NewScheduler().SetInterval(1 * time.Second).SetLogger(logger)
+		scheduler := NewScheduler().SetInterval(100 * time.Millisecond).SetLogger(logger)
 
-		s1 := NewSchedule("test").Every(3 * time.Second)
-		s2 := NewSchedule("test2").Every(5 * time.Second)
+		s1 := NewSchedule("test").Every(300 * time.Millisecond)
+		s2 := NewSchedule("test2").Every(500 * time.Millisecond)
 		scheduler.AddSchedule(s1)
 		scheduler.AddSchedule(s2)
 
@@ -24,7 +24,7 @@ func TestNewScheduler(t *testing.T) {
 			return
 		}
 
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 		defer cancel()
 		scheduler.Run(ctx, func(schedule *Schedule) {
 			t.Logf("Running schedule: %v", schedule)
