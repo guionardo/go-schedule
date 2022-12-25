@@ -1,6 +1,11 @@
 package schedule
 
-import "time"
+import (
+	"errors"
+	"strconv"
+	"strings"
+	"time"
+)
 
 func WallClock() time.Duration {
 	now := time.Now()
@@ -14,4 +19,31 @@ func Today() time.Time {
 
 func Tomorrow() time.Time {
 	return Today().Add(24 * time.Hour)
+}
+
+func ParseDuration(str string) (duration time.Duration, err error) {
+	duration, err = time.ParseDuration(str)
+	if err == nil {
+		return
+	}
+
+	w := strings.Split(str, ":")
+	if len(w) < 2 {
+		err = errors.New("invalid duration")
+		return
+	}
+	var h, m, s int
+	if h, err = strconv.Atoi(w[0]); err != nil {
+		return
+	}
+	if m, err = strconv.Atoi(w[1]); err != nil {
+		return
+	}
+	if len(w) > 2 {
+		if s, err = strconv.Atoi(w[2]); err != nil {
+			return
+		}
+	}
+	duration = time.Duration(h)*time.Hour + time.Duration(m)*time.Minute + time.Duration(s)*time.Second
+	return
 }

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func TestNewScheduler(t *testing.T) {
+func TestNewScheduler_(t *testing.T) {
 	t.Run("Default", func(t *testing.T) {
 		logger := log.New(os.Stdout, "", log.LstdFlags)
 		scheduler := NewScheduler().SetInterval(100 * time.Millisecond).SetLogger(logger)
@@ -40,3 +40,5 @@ func TestNewScheduler(t *testing.T) {
 	})
 
 }
+
+

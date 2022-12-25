@@ -33,3 +33,48 @@ func TestTomorrow(t *testing.T) {
 	})
 
 }
+
+func TestParseDuration(t *testing.T) {
+	tests := []struct {
+		name         string
+		str          string
+		wantDuration time.Duration
+		wantErr      bool
+	}{
+		{
+			name:         "Duration",
+			str:          "1h30m45s",
+			wantDuration: 90*time.Minute + 45*time.Second,
+			wantErr:      false,
+		},
+		{
+			name:         "Hour/Minute",
+			str:          "01:30",
+			wantDuration: 90 * time.Minute,
+			wantErr:      false,
+		},
+		{
+			name:         "Hour/Minute/Second",
+			str:          "01:30:45",
+			wantDuration: 90*time.Minute + 45*time.Second,
+			wantErr:      false,
+		},
+		{
+			name:    "Invalid",
+			str:     "invalid",
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotDuration, err := ParseDuration(tt.str)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("ParseDuration() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if gotDuration != tt.wantDuration {
+				t.Errorf("ParseDuration() = %v, want %v", gotDuration, tt.wantDuration)
+			}
+		})
+	}
+}

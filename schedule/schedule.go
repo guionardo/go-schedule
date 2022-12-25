@@ -7,51 +7,64 @@ import (
 	"time"
 )
 
+// Schedule represents a scheduled event
+// You can use the builder pattern to create a schedule:
+// schedule := NewSchedule("test").Every(300 * time.Millisecond)
 type Schedule struct {
 	Name          string
 	Data          map[string]any
 	runsEvery     time.Duration
 	runsAfter     time.Time
-	Enabled       bool
+	enabled       bool
 	LastRun       time.Time
 	dontRunBefore time.Duration
 	dontRunAfter  time.Duration
 	runCount      uint64
 }
 
+// Creates a new basic schedule
 func NewSchedule(name string) *Schedule {
 	return &Schedule{
 		Name:      name,
 		Data:      make(map[string]any),
 		runsEvery: time.Duration(0),
 		runsAfter: time.Time{},
-		Enabled:   true,
+		enabled:   true,
 		LastRun:   time.Time{},
 	}
 }
 
+// Setups schedule to run every duration
 func (s *Schedule) Every(duration time.Duration) *Schedule {
 	s.runsEvery = duration
 	return s
 }
 
+// Setups schedule to run after time
 func (s *Schedule) After(t time.Time) *Schedule {
 	s.runsAfter = t
 	return s
 }
 
+// Setups schedule to not run before duration
+// Duration represents a time of day without date. 
+// You can use schedule.ParseDuration to create a duration
 func (s *Schedule) DontRunBefore(duration time.Duration) *Schedule {
 	s.dontRunBefore = duration
 	return s
 }
 
+// Setups schedule to not run after duration
+// Duration represents a time of day without date. 
+// You can use schedule.ParseDuration to create a duration
 func (s *Schedule) DontRunAfter(duration time.Duration) *Schedule {
 	s.dontRunAfter = duration
 	return s
 }
 
+// Returns the time of the next run or empty if not enabled or no next run
 func (s *Schedule) NextRun() time.Time {
-	if !s.Enabled {
+	if !s.enabled {
 		return time.Time{}
 	}
 	if s.runsEvery > 0 {
@@ -61,6 +74,11 @@ func (s *Schedule) NextRun() time.Time {
 		return s.getNextRunWindow(s.runsAfter)
 	}
 	return time.Time{}
+}
+
+func (s *Schedule) Enabled(enabled bool) *Schedule {
+	s.enabled = enabled
+	return s
 }
 
 func (s *Schedule) getNextRunWindow(nextRun time.Time) time.Time {
@@ -90,7 +108,7 @@ func (s *Schedule) String() string {
 	if !s.runsAfter.IsZero() {
 		sb.WriteString(fmt.Sprintf(", runs after %v", s.runsAfter))
 	}
-	if !s.Enabled {
+	if !s.enabled {
 		sb.WriteString(", disabled")
 	}
 	if !s.LastRun.IsZero() {
@@ -111,7 +129,7 @@ func (s *Schedule) Run(callback ScheduleCallBack, logger *log.Logger) {
 	callback(s)
 	s.LastRun = time.Now()
 	s.runCount++
-	if logger!=nil {
+	if logger != nil {
 		logger.Printf("Running schedule: %v", s)
 	}
 }

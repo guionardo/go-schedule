@@ -53,7 +53,7 @@ func (s *Scheduler) GetNextSchedule() *Schedule {
 
 	var next *Schedule
 	for _, schedule := range s.schedules {
-		if !schedule.Enabled {
+		if !schedule.enabled {
 			continue
 		}
 		if next == nil {
