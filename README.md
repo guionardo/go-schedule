@@ -1,7 +1,10 @@
 # Go Simple Schedule Package
 
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/guionardo/go-schedule)
+![GitHub last commit](https://img.shields.io/github/last-commit/guionardo/go-schedule)
 [![Go](https://github.com/guionardo/go-schedule/actions/workflows/go.yml/badge.svg)](https://github.com/guionardo/go-schedule/actions/workflows/go.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=guionardo_go-schedule&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=guionardo_go-schedule)
+
 
 ## Setup
 
